@@ -1,0 +1,9 @@
+{
+  "name": "KIRAN — Heatwave Early Warning",
+  "short_name": "KIRAN",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0E14",
+  "theme_color": "#0A0E14",
+  "icons": []
+}

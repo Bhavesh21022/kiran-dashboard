@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-space-grotesk: "Space Grotesk", sans-serif;
+  --font-inter: "Inter", sans-serif;
+}
+
+html, body {
+  background: #0A0E14;
+  color: #E7EAF0;
+}
+
+body {
+  font-family: var(--font-inter);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(251,109,58,0.10), transparent),
+    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(45,212,191,0.06), transparent);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgba(251,109,58,0.35);
+}
+
+.glass {
+  background: rgba(255,255,255,0.045);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 999px;
+}
+
+/* ============ KIRAN wordmark — mirror/chrome shimmer ============ */
+.kiran-shimmer {
+  background: linear-gradient(
+    110deg,
+    #fde68a 8%, #f59e0b 22%, #fff8e6 42%, #ffffff 50%, #fb6d3a 62%, #ef4444 78%, #fde68a 94%
+  );
+  background-size: 260% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmerSweep 3.4s linear infinite;
+  filter: drop-shadow(0 0 22px rgba(245, 158, 11, 0.35));
+}
+@keyframes shimmerSweep {
+  to { background-position: -260% center; }
+}
+
+/* ============ AR/VR ambient grid ============ */
+.kiran-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.7) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.7) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 25%, black 35%, transparent 88%);
+  mask-image: radial-gradient(ellipse 85% 65% at 50% 25%, black 35%, transparent 88%);
+  animation: gridDrift 28s linear infinite;
+}
+@keyframes gridDrift {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 92px 92px, 92px 92px; }
+}
+
+@keyframes floatSun {
+  0%, 100% { transform: translate(0px, 0px); }
+  50% { transform: translate(6px, -16px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
