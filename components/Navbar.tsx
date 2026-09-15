@@ -20,7 +20,6 @@ export default function Navbar({ nationalAvgCategory, locations, onSelectLocatio
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  // Category ke hisab se badge color
   const getBadgeColor = (cat: RiskCategory) => {
     switch (cat) {
       case "Low": return "bg-green-500/20 text-green-400 border-green-500/30";
@@ -35,7 +34,7 @@ export default function Navbar({ nationalAvgCategory, locations, onSelectLocatio
     <header className="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-md border-b border-white/10 px-4 py-3 sm:px-8">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         
-        {/* Left: Mobile Menu Button & Brand Logo */}
+        {/* Left: Mobile Menu & Brand Logo */}
         <div className="flex items-center gap-3">
           <button 
             onClick={toggleMenu}
@@ -65,7 +64,6 @@ export default function Navbar({ nationalAvgCategory, locations, onSelectLocatio
             <span>National Avg: {nationalAvgCategory}</span>
           </div>
 
-          {/* Language Toggle */}
           <button
             onClick={() => setLang(lang === "en" ? "hi" : "en")}
             className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-white hover:bg-white/10 transition"
