@@ -5,11 +5,10 @@ interface OutdoorWorkerModeProps {
 }
 
 export default function OutdoorWorkerMode({ riskLevel }: OutdoorWorkerModeProps) {
-  // Risk ke hisaab se alert set karna
   const isDanger = riskLevel === "High" || riskLevel === "Extreme";
 
   return (
-    <div className="bg-black/60 border border-white/20 p-6 rounded-3xl shadow-lg mt-6">
+    <div className="bg-black/60 border border-white/20 p-6 rounded-3xl shadow-lg mt-6 w-full">
       <div className="flex items-center gap-3 mb-4">
         <span className="text-3xl">👷</span>
         <h3 className="text-xl font-bold text-white">Outdoor Worker Mode</h3>
@@ -33,7 +32,7 @@ export default function OutdoorWorkerMode({ riskLevel }: OutdoorWorkerModeProps)
           </li>
           <li className="flex items-start gap-2">
             <span>💧</span>
-            <span><strong>Hydration Protocol:</strong> Drink 250ml of water every 20 minutes, even if not thirsty.</span>
+            <span><strong>Hydration Protocol:</strong> Drink 250ml of water every 20 minutes.</span>
           </li>
         </ul>
       </div>
