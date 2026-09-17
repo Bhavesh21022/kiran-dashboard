@@ -1,86 +1,46 @@
+// Developer: Bhavesh Bharatkumar Gehlot
+// Enrollment Number: 250140119026
+// Project: KIRAN (SIH26083)
+
 "use client";
-// @ts-ignore
-import { MapContainer, TileLayer, Marker, Popup, LayersControl, CircleMarker, useMap } from "react-leaflet";
-// @ts-ignore
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
-import { useEffect } from "react";
 
-// Marker icon fix
-const customIcon = new L.Icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-});
-
-// Ye component map ko programmatic tareeqe se zoom karne ke liye hai
-function ZoomController({ myLocation, trigger }: { myLocation: any, trigger: number }) {
-  const map = useMap();
-  
-  useEffect(() => {
-    if (trigger > 0 && myLocation) {
-      map.flyTo([myLocation.lat, myLocation.lng], 13, { animate: true, duration: 1.5 });
-    }
-  }, [trigger, myLocation, map]);
-
-  return null;
+interface MapViewProps {
+  lat: number;
+  lng: number;
+  city: string;
 }
 
-export default function MapView({ readings, onSelectLocation, myLocation, zoomTrigger }: any) {
-  // Default map load hote time center India
-  const center = [20.5937, 78.9629]; 
+export default function MapView({ lat, lng, city }: MapViewProps) {
+  // OpenStreetMap ka embedded URL (Bina API key ke chalta hai)
+  const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.2}%2C${lat - 0.2}%2C${lng + 0.2}%2C${lat + 0.2}&layer=mapnik&marker=${lat}%2C${lng}`;
 
   return (
-    <div className="h-[450px] w-full rounded-3xl overflow-hidden border border-white/20 shadow-[0_0_20px_rgba(0,0,0,0.5)] relative z-0">
-      <MapContainer center={center as any} zoom={5} className="h-full w-full">
-        
-        {/* Ye zoom event catch karega */}
-        <ZoomController myLocation={myLocation} trigger={zoomTrigger} />
+    <div className="w-full h-[60vh] min-h-[400px] rounded-3xl overflow-hidden border border-white/10 relative shadow-2xl group">
+      
+      {/* 1. Inverted Dark Mode Map */}
+      <iframe
+        src={mapSrc}
+        className="w-full h-full absolute inset-0 filter invert-[90%] hue-rotate-180 contrast-125 transition-transform duration-1000 group-hover:scale-105"
+        style={{ border: 0 }}
+        allowFullScreen
+        loading="lazy"
+        title={`Heat Map for ${city}`}
+      ></iframe>
 
-        <LayersControl position="topright">
-          <LayersControl.BaseLayer checked name="🌍 Normal (Street)">
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name="🛰️ Satellite View">
-            <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name="🌙 Dark Mode">
-            <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
-          </LayersControl.BaseLayer>
-        </LayersControl>
+      {/* 2. Heatwave Risk Overlay (Red Tint) */}
+      <div className="absolute inset-0 bg-red-500/20 pointer-events-none mix-blend-color"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
 
-        {/* Live Location Marker (Blue Icon) */}
-        {myLocation && (
-          <Marker position={[myLocation.lat, myLocation.lng]} icon={customIcon}>
-            <Popup className="font-bold text-blue-600">📍 Your Exact Location</Popup>
-          </Marker>
-        )}
-
-        {/* Database ke Danger Cities (Red/Orange Dots) */}
-        {readings && readings.length > 0 && readings.map((city: any) => (
-          <CircleMarker
-            key={city.id}
-            center={[city.lat, city.lng]}
-            radius={9}
-            pathOptions={{
-              color: city.category === "Extreme" ? "#ef4444" : "#f97316", // Red for Extreme, Orange for High
-              fillColor: city.category === "Extreme" ? "#ef4444" : "#f97316",
-              fillOpacity: 0.9,
-              weight: 2,
-            }}
-            eventHandlers={{
-              click: () => onSelectLocation(city.id),
-            }}
-          >
-            <Popup className="font-bold text-black text-center">
-               <span className="text-lg">{city.name}</span> <br/>
-               Risk: {city.category} <br/>
-               Temp: {city.tempC}°C
-            </Popup>
-          </CircleMarker>
-        ))}
-      </MapContainer>
+      {/* 3. Live Radar Badge */}
+      <div className="absolute top-4 left-4 bg-black/80 px-4 py-2 rounded-xl border border-white/10 backdrop-blur-md shadow-lg z-10 flex items-center gap-3">
+        <span className="relative flex h-3 w-3">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+        </span>
+        <span className="text-sm font-bold text-white tracking-wider">
+          LIVE HEAT ZONE : {city.toUpperCase()}
+        </span>
+      </div>
     </div>
   );
 }
